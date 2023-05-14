@@ -1,8 +1,11 @@
 - name: My first play
   hosts: kvm
+  become: true
   tasks:
-   - name: Ping my hosts
-     ansible.builtin.ping:
-   - name: Print message
-     ansible.builtin.debug:
-       msg: Hello world
+   - name: Smalltalk with the repos if older 1h
+     register: systemupdate
+     apt: 
+       update_cache=yes 
+       force_apt_get=yes 
+       cache_valid_time=3600
+

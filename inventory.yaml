@@ -1,3 +1,4 @@
 kvm:
   hosts:
-    bingobongo
+    bingobongo:
+      ansible_become_pass: '{{ kvm_sudo_pass }}'
