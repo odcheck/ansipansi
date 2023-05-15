@@ -33,9 +33,9 @@
 
    - name: rbenv install
      register: rbenvinstaller
-     become: false
-     warn: false
+     become: false     
      shell:
        cmd: curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
+       warn: false
 
 
