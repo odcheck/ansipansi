@@ -4,10 +4,21 @@ Param (
 [Parameter(Mandatory=$True)][ValidateNotNull()][string]$username
 )
 
-if (-not(Test-Path -Path $Env:windir\temp\wslprep\Ubuntu.appx -PathType Leaf)) { 
-    Write-Output "Downloading the Ubuntu 22.04 LTS appx installer, this could take a while..."
-    Invoke-WebRequest -Uri https://aka.ms/wslubuntu2004 -OutFile $Env:windir\temp\wslprep\Ubuntu.appx -UseBasicParsing    
-    }
+if (-not(Test-Path $Env:windir\temp\wslprep)) {
+    New-Item -Path $Env:windir\temp\wslprep -ItemType Directory
+}
+Else {
+    Write-host "Folder '$Env:windir\temp\wslprep' already exists!" -ForegroundColor green -BackgroundColor white
+}
+
+if (Test-Path $Env:windir\temp\wslprep\Ubuntu.appx -PathType leaf) {
+    Write-Output "File does Exist" -ForegroundColor green -BackgroundColor white
+}
+Else {
+    Write-Output "Downloading the Ubuntu 22.04 LTS appx installer, this could take a while..." -ForegroundColor red -BackgroundColor white
+    Invoke-WebRequest -Uri https://aka.ms/wslubuntu2004 -OutFile $Env:windir\temp\wslprep\Ubuntu.appx -UseBasicParsing  
+}
+
 Copy-Item $Env:windir\temp\wslprep\Ubuntu.appx $Env:windir\temp\wslprep\$wslname.zip
 Expand-Archive $Env:windir\temp\wslprep\$wslname.zip $Env:windir\temp\wslprep\x64 -Force
 Move-Item -Path $Env:windir\temp\wslprep\x64\*_x64.appx -Destination $Env:windir\temp\wslprep\x64\$wslname.zip
@@ -16,7 +27,7 @@ Expand-Archive $Env:windir\temp\wslprep\x64\$wslname.zip $Env:windir\temp\wslpre
 if (-Not (Test-Path -Path $wslvhdxpath)) {
     mkdir $wslvhdxpath
 }
-Write-Output "Install Ubuntu 22.04 LTS with VHDX path $wslvhdxpath and WSL installation name $wslname"
+Write-Output "Install Ubuntu 22.04 LTS with VHDX path $wslvhdxpath and WSL installation name $wslname" -ForegroundColor green -BackgroundColor white
 wsl --import $wslname $wslvhdxpath $Env:windir\temp\wslprep\x64\$wslname\install.tar.gz
 
 Remove-Item -r $Env:windir\temp\wslprep\x64\
