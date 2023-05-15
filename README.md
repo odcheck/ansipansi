@@ -1,17 +1,17 @@
 # ansipansi
 
-## WSL2 very slow on download speed on my private desktop using Windows 11 Pro
-First of all, I am using a USB 3 attached WLAN Adapter, it works fine outside of the WSL.  
-I figured out, that I should disable large packages using the control panel.  
-But I could not see the vEthernet (WSL) adapter in my windows control panel.  
-I've checked if it is there using ```ipconfig.exe /all```
+## Prepare for WSL
+1. *activatewsl.ps1*
+2. *installwsl2kernal.ps1*
+3. reboot system
 
-### Solution
+## Install Ubuntu 22.04 LTS
+1. *installmyubuntu.ps1*  
+```./installmyubuntu.ps1 <wslname> <wslvhdxpath> <username>```  
 
+**e.g.** 
 ```
-Disable-NetAdapterBinding -Name "vEthernet (WSL)" -ComponentID ms_tcpip6 -IncludeHidden # disable ipv6
-Disable-NetAdapterLso -Name "vEthernet (WSL)" -IncludeHidden # Seems to disable the large packet. Didn't tested it since mine was already disabled
-
-Get-NetAdapterBinding -IncludeHidden -Name "vEthernet (WSL)" # Check if ipv6 was disabled
-Get-NetAdapterAdvancedProperty -IncludeHidden -Name "vEthernet (WSL)" # Check if large packet was disabled
+./installmyubuntu.ps1 bingobongo c:\wsldistros\bingobongo dulli
 ```
+
+[WSL2 slow network issue?](https://blog.tuxclouds.org/posts/wsl2-slow/)
