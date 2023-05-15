@@ -38,4 +38,12 @@
        cmd: curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
        warn: false
 
-
+   - name: add to user .bashrc
+     register: bashrcmodify
+     become: false
+     ansible.builtin.blockinfile:
+       path: ~/.bashrc
+       backup: yes
+       block: |
+         export PATH="$HOME/.rbenv/bin:$PATH"
+         eval "$(rbenv init -)"
