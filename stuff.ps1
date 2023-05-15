@@ -21,6 +21,9 @@ wsl --import $wslname $wslvhdxpath $Env:windir\temp\wslprep\x64\$wslname\install
 
 Remove-Item -r $Env:windir\temp\wslprep\x64\
 
+# copy global wslconfig
+Copy-Item .\wsl\files\.wslconfig $Env:userprofile\.wslconfig -Force
+
 # Update the system
 wsl -d $wslname -u root bash -ic "apt update && apt upgrade -y && apt autoremove -y"
 
@@ -35,10 +38,5 @@ wsl -d $wslname -u $username bash -ic "./wsl/bash/prepare.sh"
 
 
 
-# if ($installAllSoftware -ieq $true) {
-#     wsl -d $wslname -u root bash -ic "./scripts/config/system/sudoNoPasswd.sh $username"
-#     wsl -d $wslname -u root bash -ic ./scripts/install/installBasePackages.sh
-#     wsl -d $wslname -u $username bash -ic ./scripts/install/installAllSoftware.sh
-#     wsl -d $wslname -u root bash -ic "./scripts/config/system/sudoWithPasswd.sh $username"
-# }
+
 

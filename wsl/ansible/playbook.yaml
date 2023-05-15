@@ -1,5 +1,6 @@
 - name: Works on my machine
-  hosts: kvm
+  hosts: 127.0.0.1
+  connection: local
   become: true
   tasks:
 
