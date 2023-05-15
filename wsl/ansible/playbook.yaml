@@ -50,7 +50,7 @@
 
    - name: source .bashrc
      register: sourcebashrc
-     sudo: false
+     become: false
      shell: source ~/.bashrc
      args:
        executable: /bin/bash
