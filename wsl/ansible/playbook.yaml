@@ -4,49 +4,51 @@
   become: true
   tasks:
 
-   - name: Smalltalk with the repos if older 1h
-     register: systemupdate
-     apt: 
-       update_cache=yes 
-       force_apt_get=yes 
-       cache_valid_time=3600
+  - name: Smalltalk with the repos if older 1h
+    register: systemupdate
+    apt: 
+      update_cache=yes 
+      force_apt_get=yes 
+      cache_valid_time=3600
 
-   - name: RBenv dependencys for ruby
-     register: rubydependency
-     apt:
-       pkg:
-       - autoconf
-       - bison
-       - build-essential
-       - libssl-dev
-       - libyaml-dev
-       - libreadline6-dev
-       - zlib1g-dev
-       - libncurses5-dev
-       - libffi-dev
-       - libgdbm6
-       - libgdbm-dev
-       - libdb-dev
-       - patch
-       - rustc
-       - uuid-dev
+  - name: RBenv dependencys for ruby
+    register: rubydependency
+    apt:
+      pkg:
+      - autoconf
+      - bison
+      - build-essential
+      - libssl-dev
+      - libyaml-dev
+      - libreadline6-dev
+      - zlib1g-dev
+      - libncurses5-dev
+      - libffi-dev
+      - libgdbm6
+      - libgdbm-dev
+      - libdb-dev
+      - patch
+      - rustc
+      - uuid-dev
 
-   - name: rbenv install
-     register: rbenvinstaller
-     become: false     
-     shell:
-       cmd: curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
-       warn: false
+  - name: rbenv install
+    register: rbenvinstaller
+    become: false     
+    shell:
+      cmd: curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
+      warn: false
 
-   - name: add to user .bashrc
-     register: bashrcmodify
-     become: false
-     ansible.builtin.blockinfile:
-       path: ~/.bashrc
-       backup: yes
-       block: |
-         export PATH="$HOME/.rbenv/bin:$PATH"
-         eval "$(rbenv init -)"
+  - name: add to user .bashrc
+    register: bashrcmodify
+    become: false
+    ansible.builtin.blockinfile:
+      path: ~/.bashrc
+      backup: yes
+      block: |
+        export PATH="$HOME/.rbenv/bin:$PATH"
+        eval "$(rbenv init -)"
 
-
-
+  - name: reload bashrc
+    become: false
+    shell:
+      cmd: sudo -u $USER -i
