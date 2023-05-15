@@ -31,20 +31,10 @@
        - rustc
        - uuid-dev
 
-   - name: Clone rbenv repo
-     register: rbenvgitclone
+   - name: rbenv install
+     register: rbenvinstaller
      become: false
-     git:
-       repo: https://github.com/rbenv/rbenv.git
-       dest: ~/.rbenv
-       clone: yes
-       update: yes
+     shell:
+       cmd: curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
 
-   - name: Clone rbenv-plugins
-     register: rbenvpluginsclone
-     become: false
-     git:
-       repo: https://github.com/rbenv/ruby-build.git
-       dest: ~/.rbenv/plugins
-       clone: yes
-       update: yes
+
