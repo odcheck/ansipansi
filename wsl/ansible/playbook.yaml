@@ -68,7 +68,9 @@
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
       [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
       rbenv install {{ ruby_version }}
-      nvm install {{ nodejs_version }}    
+      nvm install {{ nodejs_version }}
+      rbenv global {{ ruby_version }}
+      nvm use {{ nodejs_version }}
 
     args:
       executable: /bin/bash
