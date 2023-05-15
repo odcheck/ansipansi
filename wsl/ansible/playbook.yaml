@@ -48,7 +48,12 @@
         export PATH="$HOME/.rbenv/bin:$PATH"
         eval "$(rbenv init -)"
 
-  - name: reload bashrc
-    become: false
-    shell:
-      cmd: sudo -u $USER -i
+#  - name: reload bashrc
+#    become: true
+#    shell:
+#      cmd: sudo -u $USER -i
+
+#  - name: exit interactive shell
+#    become: false
+#    shell:
+#      cmd: exit
