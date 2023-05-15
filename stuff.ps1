@@ -28,12 +28,14 @@ wsl -d $wslname -u root bash -ic "apt update && apt upgrade -y && apt autoremove
 wsl -d $wslname -u root bash -ic "./bash/createUser.sh $username ubuntu"
 
 # ensure WSL Distro is restarted when first used with user account
-wsl -t $wslName
+wsl -t $wslname
 
-if ($installAllSoftware -ieq $true) {
-    wsl -d $wslname -u root bash -ic "./scripts/config/system/sudoNoPasswd.sh $username"
-    wsl -d $wslname -u root bash -ic ./scripts/install/installBasePackages.sh
-    wsl -d $wslname -u $username bash -ic ./scripts/install/installAllSoftware.sh
-    wsl -d $wslname -u root bash -ic "./scripts/config/system/sudoWithPasswd.sh $username"
-}
+wsl -d $wslname -u root bash -ic "./bash/sudoNoPasswd.sh $username"
+
+# if ($installAllSoftware -ieq $true) {
+#     wsl -d $wslname -u root bash -ic "./scripts/config/system/sudoNoPasswd.sh $username"
+#     wsl -d $wslname -u root bash -ic ./scripts/install/installBasePackages.sh
+#     wsl -d $wslname -u $username bash -ic ./scripts/install/installAllSoftware.sh
+#     wsl -d $wslname -u root bash -ic "./scripts/config/system/sudoWithPasswd.sh $username"
+# }
 
