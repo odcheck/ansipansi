@@ -1,9 +1,12 @@
 - name: Works on my machine
   hosts: 127.0.0.1
   connection: local
+  vars_files:
+    - ./variables.yaml
   become: true
-  tasks:
+  gather_facts: false
 
+  tasks:
   - name: Smalltalk with the repos if older 1h
     register: systemupdate
     apt: 
@@ -31,14 +34,14 @@
       - rustc
       - uuid-dev
 
-  - name: rbenv install
+  - name: Download rbenv install for ruby
     register: rbenvinstaller
     become: false     
     shell:
       cmd: curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
       warn: false
 
-  - name: add to user .bashrc
+  - name: Add rbenv path to .bashrc
     register: bashrcmodify
     become: false
     ansible.builtin.blockinfile:
@@ -48,19 +51,29 @@
         export PATH="$HOME/.rbenv/bin:$PATH"
         eval "$(rbenv init -)"
 
-#  - name: reload bashrc
-#    become: true
-#    shell:
-#      cmd: sudo -u $USER -i
-
-#  - name: exit interactive shell
-#    become: false
-#    shell:
-#      cmd: exit
-
-  - name: nvm install
+  - name: Download nvm install for nodejs
     register: nvminstaller
     become: false
     shell:
-      cmd: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+      cmd: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/"{{ nvm_installer_version }}"/install.sh | bash
       warn: false
+
+  - name: Install latest ruby and nodejs
+    register: installrubyandnodejs
+    become: false
+    shell: |
+      export PATH="$HOME/.rbenv/bin:$PATH"
+      eval "$(rbenv init -)"
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      rbenv install {{ ruby_version }}
+      nvm install {{ nodejs_version }}    
+
+    args:
+      executable: /bin/bash
+
+  - name: Check installation results of ruby "{{ ruby_version }}" and nodejs "{{ nodejs_version }}"
+    debug:
+      var: installrubyandnodejs.stdout
+
