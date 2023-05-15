@@ -30,7 +30,7 @@
 
    - name: Clone rbenv repo
      register: rbenvgitclone
-     sudo: false
+     become: false
      git:
        repo: https://github.com/rbenv/rbenv.git
        dest: ~/.rbenv
