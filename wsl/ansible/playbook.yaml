@@ -38,7 +38,7 @@
        update: yes
 
    - name: Clone rbenv-plugins
-     register: rbenv-plugins
+     register: rbenvpluginsclone
      become: false
      git:
        repo: https://github.com/rbenv/ruby-build.git
