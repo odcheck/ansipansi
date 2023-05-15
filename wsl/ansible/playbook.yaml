@@ -30,12 +30,9 @@
 
    - name: Download rbenv installer script
      register: rbenvinstallerdownload
-     uri:
+     ansible.builtin.get_url:
        url: https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer
-       return_content: yes
+       dest: /tmp/rbenv-installer
 
-   - name: Run rbenv installer
-     register: rbenvinstaller
-     shell:
-       cmd: sh -s -- -y
-       stdin: "{{ rbenvinstallerdownload.content }}"
+   - name: Execute rbenv-installer
+     shell: /bin/bash /tmp/rbenv-installer
