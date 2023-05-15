@@ -57,3 +57,10 @@
 #    become: false
 #    shell:
 #      cmd: exit
+
+  - name: nvm install
+    register: nvminstaller
+    become: false
+    shell:
+      cmd: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+      warn: false
