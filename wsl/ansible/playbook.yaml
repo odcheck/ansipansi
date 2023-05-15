@@ -27,6 +27,9 @@
        - libgdbm6
        - libgdbm-dev
        - libdb-dev
+       - patch
+       - rustc
+       - uuid-dev
 
    - name: Clone rbenv repo
      register: rbenvgitclone
@@ -42,6 +45,6 @@
      become: false
      git:
        repo: https://github.com/rbenv/ruby-build.git
-       dest: ~/.rbenv
+       dest: ~/.rbenv/plugins
        clone: yes
        update: yes
