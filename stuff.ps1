@@ -9,7 +9,7 @@ if (-not(Test-Path -Path $Env:windir\temp\wslprep\Ubuntu.appx -PathType Leaf)) {
     Invoke-WebRequest -Uri https://aka.ms/wslubuntu2004 -OutFile $Env:windir\temp\wslprep\Ubuntu.appx -UseBasicParsing    
     }
 Copy-Item $Env:windir\temp\wslprep\Ubuntu.appx $Env:windir\temp\wslprep\$wslname.zip
-Expand-Archive $Env:windir\temp\wslprep\$wslname.zip $Env:windir\temp\wslprep\x64
+Expand-Archive $Env:windir\temp\wslprep\$wslname.zip $Env:windir\temp\wslprep\x64 -Force
 Move-Item -Path $Env:windir\temp\wslprep\x64\*_x64.appx -Destination $Env:windir\temp\wslprep\x64\$wslname.zip
 Expand-Archive $Env:windir\temp\wslprep\x64\$wslname.zip $Env:windir\temp\wslprep\x64\$wslname
 
@@ -25,12 +25,12 @@ Remove-Item -r $Env:windir\temp\wslprep\x64\
 wsl -d $wslname -u root bash -ic "apt update && apt upgrade -y && apt autoremove -y"
 
 # create your user and add it to sudoers
-wsl -d $wslname -u root bash -ic "./bash/createUser.sh $username ubuntu"
+wsl -d $wslname -u root bash -ic "./wsl/bash/createUser.sh $username ubuntu"
 
 # ensure WSL Distro is restarted when first used with user account
 wsl -t $wslname
 
-wsl -d $wslname -u root bash -ic "./bash/sudoNoPasswd.sh $username"
+wsl -d $wslname -u root bash -ic "./wsl/bash/sudoNoPasswd.sh $username"
 
 # if ($installAllSoftware -ieq $true) {
 #     wsl -d $wslname -u root bash -ic "./scripts/config/system/sudoNoPasswd.sh $username"
