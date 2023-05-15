@@ -1,7 +1,8 @@
-- name: My first play
+- name: Works on my machine
   hosts: kvm
   become: true
   tasks:
+
    - name: Smalltalk with the repos if older 1h
      register: systemupdate
      apt: 
@@ -9,3 +10,21 @@
        force_apt_get=yes 
        cache_valid_time=3600
 
+   - name: RBenv dependencys for ruby
+     register: rubydependency
+     apt:
+       pkg:
+       - git
+       - curl
+       - autoconf
+       - bison
+       - build-essential
+       - libssl-dev
+       - libyaml-dev
+       - libreadline6-dev
+       - zlib1g-dev
+       - libncurses5-dev
+       - libffi-dev
+       - libgdbm6
+       - libgdbm-dev
+       - libdb-dev
