@@ -48,11 +48,5 @@
          export PATH="$HOME/.rbenv/bin:$PATH"
          eval "$(rbenv init -)"
 
-   - name: source .bashrc
-     register: sourcebashrc
-     become: false
-     shell: source ~/.bashrc
-     args:
-       executable: /bin/bash
 
 
