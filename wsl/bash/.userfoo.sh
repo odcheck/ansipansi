@@ -16,13 +16,13 @@ modifyBashrc () {
   fi
 }
 
-copyConfigureScript () {
-  scriptToUse=${1}
-  if [[ ! -d ${HOMEDIR}/.local/bin/env/ ]]; then
-    mkdir -p ${HOMEDIR}/.local/bin/env/
-  fi
-  cp -f ${DIR_INSTALL_UTILS}/wsl/bash/${scriptToUse} ${HOMEDIR}/.local/bin/env/
-}
+# copyConfigureScript () {
+#   scriptToUse=${1}
+#   if [[ ! -d ${HOMEDIR}/.local/bin/env/ ]]; then
+#     mkdir -p ${HOMEDIR}/.local/bin/env/
+#   fi
+#   cp -f ${DIR_INSTALL_UTILS}/wsl/bash/${scriptToUse} ${HOMEDIR}/.local/bin/env/
+# }
 
 setUserName () {
   USERNAME=${1-""}
