@@ -27,3 +27,15 @@
        - libgdbm6
        - libgdbm-dev
        - libdb-dev
+
+   - name: Download rbenv installer script
+     register: rbenvinstallerdownload
+     uri:
+       url: https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer
+       return_content: yes
+
+   - name: Run rbenv installer
+     register: rbenvinstaller
+     shell:
+       cmd: sh -s -- -y
+       stdin: "{{ rbenvinstallerdownload.content }}"
