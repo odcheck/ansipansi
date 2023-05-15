@@ -51,6 +51,6 @@
    - name: source .bashrc
      register: sourcebashrc
      become: false
-     shell: 
-       cmd: /bin/bash source ~/.bashrc
+     shell: source ~/.bashrc
+
 
