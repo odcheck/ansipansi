@@ -41,7 +41,7 @@
       cmd: curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
       warn: false
 
-  - name: Add rbenv path to .bashrc
+  - name: Add rbenv and gem path to .bashrc
     register: bashrcmodify
     become: false
     ansible.builtin.blockinfile:
@@ -50,6 +50,8 @@
       block: |
         export PATH="$HOME/.rbenv/bin:$PATH"
         eval "$(rbenv init -)"
+        export GEM_HOME="$HOME/gems"
+        export PATH="$HOME/gems/bin:$PATH"        
 
   - name: Download nvm install for nodejs
     register: nvminstaller
@@ -58,24 +60,56 @@
       cmd: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/"{{ nvm_installer_version }}"/install.sh | bash
       warn: false
 
-  - name: Install latest ruby and nodejs
-    register: installrubyandnodejs
+  - name: Install latest ruby
+    register: installruby
     become: false
+    async: 10
     shell: |
-      export PATH="$HOME/.rbenv/bin:$PATH"
-      eval "$(rbenv init -)"
-      export NVM_DIR="$HOME/.nvm"
-      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-      rbenv install "{{ ruby_version }}"
-      nvm install "{{ nodejs_version }}"
-      rbenv global "{{ ruby_version }}"
-      nvm use "{{ nodejs_version }}"
+        export PATH="$HOME/.rbenv/bin:$PATH"
+        eval "$(rbenv init -)"
+        rbenv install "{{ ruby_version }}"
+        rbenv global "{{ ruby_version }}"
 
     args:
       executable: /bin/bash
 
-  - name: Check installation results of ruby "{{ ruby_version }}" and nodejs "{{ nodejs_version }}"
+  - name: Check installation results of ruby "{{ ruby_version }}"
     debug:
-      var: installrubyandnodejs.stdout
+      var: installruby.stdout
 
+  - name: Install latest nodejs
+    register: installnodejs
+    become: false
+    async: 10
+    shell: |
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+        nvm install "{{ nodejs_version }}"
+        nvm use "{{ nodejs_version }}"
+
+    args:
+      executable: /bin/bash
+
+  - name: Check installation results of nodejs "{{ nodejs_version }}"
+    debug:
+      var: installnodejs.stdout
+
+  - name: Gem install jekyll bundler
+    register: geminstall
+    become: false
+    async: 60
+    poll: 60
+    shell: |
+        export PATH="$HOME/.rbenv/bin:$PATH"
+        eval "$(rbenv init -)"    
+        export GEM_HOME="$HOME/gems"
+        export PATH="$HOME/gems/bin:$PATH"
+        gem install jekyll bundler
+    
+    args:
+      executable: /bin/bash
+
+  - name: Check installation result of jekyll bundler
+    debug:
+      var: geminstall.stdout
