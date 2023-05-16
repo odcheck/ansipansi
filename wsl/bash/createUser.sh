@@ -33,7 +33,7 @@ createMainUser () {
       chmod 700 ${HOMEDIR}/.ssh
   fi
 
-  cp ${DIR_ME}/nogit/!(.gitignore)* ${HOMEDIR}/.ssh
+  cp ${DIR_ME}/nogit/* ${HOMEDIR}/.ssh
 
   if [[ -f ${HOMEDIR}/.ssh/config ]]; then      
       chown ${USERNAME}:${USERNAME} ${HOMEDIR}/.ssh/config
