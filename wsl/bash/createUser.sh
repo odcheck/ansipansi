@@ -22,9 +22,32 @@ createMainUser () {
     usermod -aG wheel ${USERNAME}
   fi
 
-  if [[ ! -d ${HOMEDIR}/Downloads ]]; then
+  if [[ ! -d ${HOMEDIR}/git ]]; then
       mkdir ${HOMEDIR}/git
       chown ${USERNAME}:${USERNAME} ${HOMEDIR}/git
+  fi
+
+  if [[ ! -d ${HOMEDIR}/.ssh ]]; then
+      mkdir ${HOMEDIR}/.ssh
+      chown ${USERNAME}:${USERNAME} ${HOMEDIR}/.ssh
+      chmod 700 ${HOMEDIR}/.ssh
+  fi
+
+  cp ${DIR_ME}/nogit/!(.gitignore)* ${HOMEDIR}/.ssh
+
+  if [[ -f ${HOMEDIR}/.ssh/config ]]; then      
+      chown ${USERNAME}:${USERNAME} ${HOMEDIR}/.ssh/config
+      chmod 644 ${HOMEDIR}/.ssh/config
+  fi
+
+  if [[ -f ${HOMEDIR}/.ssh/id_rsa ]]; then      
+      chown ${USERNAME}:${USERNAME} ${HOMEDIR}/.ssh/id_rsa
+      chmod 600 ${HOMEDIR}/.ssh/id_rsa
+  fi
+
+  if [[ -f ${HOMEDIR}/.ssh/id_rsa.pub ]]; then      
+      chown ${USERNAME}:${USERNAME} ${HOMEDIR}/.ssh/id_rsa.pub
+      chmod 644 ${HOMEDIR}/.ssh/id_rsa.pub
   fi
 
   # ensure no password is set
