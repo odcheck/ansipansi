@@ -112,3 +112,13 @@
   - name: Check installation result of jekyll bundler
     debug:
       var: geminstall.stdout
+
+  - name: Clone tuxonlinewisdom Git repository
+    become: false
+    tags: gitclone
+    when: GitRepo is defined
+    git:
+      repo: "{{ GitRepo }}"
+      dest: "{{ GitRepoDest }}"
+      accept_hostkey: yes
+      key_file: $HOME/.ssh/id_rsa
