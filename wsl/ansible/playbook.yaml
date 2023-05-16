@@ -63,7 +63,7 @@
   - name: Install latest ruby
     register: installruby
     become: false
-    async: 10
+    async: 600
     shell: |
         export PATH="$HOME/.rbenv/bin:$PATH"
         eval "$(rbenv init -)"
@@ -80,7 +80,7 @@
   - name: Install latest nodejs
     register: installnodejs
     become: false
-    async: 10
+    async: 600
     shell: |
         export NVM_DIR="$HOME/.nvm"
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
@@ -98,8 +98,7 @@
   - name: Gem install jekyll bundler
     register: geminstall
     become: false
-    async: 60
-    poll: 60
+    async: 600
     shell: |
         export PATH="$HOME/.rbenv/bin:$PATH"
         eval "$(rbenv init -)"    
