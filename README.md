@@ -10,12 +10,15 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 3. reboot system
 
 ## Install Ubuntu 22.04 LTS
-1. *installmyubuntu.ps1*  
-```./installmyubuntu.ps1 <wslname> <wslvhdxpath> <username>```  
+1. If you put your crap ssh files like (id_rsa, id_rsa.pub and config) into the folder wsl/bash/nogit you're fine otherwise you're fucked. So it's recommended. *PS: If e.g. your ssh private key file is called id_my_rsa or something else, you're fucked as well, cause I don't care. The must be named as mentioned.*
+2. *installmyubuntu.ps1*  
+```./installmyubuntu.ps1 <wslname> <wslvhdxpath> <username>```
 
-**e.g.** 
+**use it like e.g.** 
 ```
 ./installmyubuntu.ps1 bingobongo c:\wsldistros\bingobongo dulli
 ```
 
-[WSL2 slow network issue?](https://blog.tuxclouds.org/posts/wsl2-slow/)
+## Related Jon Rahm readings
+* [WSL2 slow network issue?](https://blog.tuxclouds.org/posts/wsl2-slow/)
+* [Jon Rahm golfs you down, greates player](https://en.wikipedia.org/wiki/Jon_Rahm)
