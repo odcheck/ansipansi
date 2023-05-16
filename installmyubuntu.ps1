@@ -4,18 +4,28 @@ Param (
 [Parameter(Mandatory=$True)][ValidateNotNull()][string]$username
 )
 
+function Green
+{
+    process { Write-Host $_ -ForegroundColor Green }
+}
+
+function Red
+{
+    process { Write-Host $_ -ForegroundColor Red }
+}
+
 if (-not(Test-Path $Env:windir\temp\wslprep)) {
     New-Item -Path $Env:windir\temp\wslprep -ItemType Directory
 }
 else {
-    Write-host "Folder '$Env:windir\temp\wslprep' already exists!" -ForegroundColor green -BackgroundColor white
+    Write-host "Folder '$Env:windir\temp\wslprep' already exists!" | Red
 }
 
 if (Test-Path $Env:windir\temp\wslprep\Ubuntu.appx -PathType leaf) {
-    Write-Output "File does Exist" -ForegroundColor green -BackgroundColor white
+    Write-Output "File does Exist" | Red
 }
 else {
-    Write-Output "Downloading the Ubuntu 22.04 LTS appx installer, this could take a while..." -ForegroundColor red -BackgroundColor white
+    Write-Output "Downloading the Ubuntu 22.04 LTS appx installer, this could take a while..." | Red
     Invoke-WebRequest -Uri https://aka.ms/wslubuntu2004 -OutFile $Env:windir\temp\wslprep\Ubuntu.appx -UseBasicParsing  
 }
 
@@ -28,10 +38,10 @@ if (-Not (Test-Path -Path $wslvhdxpath)) {
     New-Item -Path $wslvhdxpath -ItemType Directory
 }
 else {
-    Write-host "Folder '$wslvhdxpath' already exists!" -ForegroundColor green -BackgroundColor white
+    Write-host "Folder '$wslvhdxpath' already exists!" | Red
 }
 
-Write-Output "Install Ubuntu 22.04 LTS with VHDX path $wslvhdxpath and WSL installation name $wslname" -ForegroundColor green -BackgroundColor white
+Write-Output "Install Ubuntu 22.04 LTS with VHDX path $wslvhdxpath and WSL installation name $wslname" | Green
 wsl --import $wslname $wslvhdxpath $Env:windir\temp\wslprep\x64\$wslname\install.tar.gz
 
 Remove-Item -r $Env:windir\temp\wslprep\x64\
