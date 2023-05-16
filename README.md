@@ -1,4 +1,8 @@
 # ansipansi
+Maybe you Dulli have to run this command
+```
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+```
 
 ## Prepare for WSL
 1. *activatewsl.ps1*
