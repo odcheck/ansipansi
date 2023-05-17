@@ -9,15 +9,16 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 2. *installwsl2kernal.ps1*
 3. reboot system
 
-## Install Ubuntu 22.04 LTS
+## Install Debian or Ubuntu
 1. If you put your crap ssh files like (id_rsa, id_rsa.pub and config) into the folder wsl/bash/nogit you're fine otherwise you're fucked. So it's recommended. *PS: If e.g. your ssh private key file is called id_my_rsa or something else, you're fucked as well, cause I don't care. The must be named as mentioned.*
-2. *installmyubuntu.ps1*  
-```./installmyubuntu.ps1 <wslname> <wslvhdxpath> <username>```
+2. *installdistro.ps1*\
+```./installdistro.ps1 <wslname> <wslvhdxpath> <username> <debian|ubuntu>```
 
-**use it like e.g.** 
+**use it like e.g.**
 ```
-./installmyubuntu.ps1 bingobongo c:\wsldistros\bingobongo dulli
+./installdistro.ps1 bingobongo c:\wsldistros\bingobongo dulli ubuntu
 ```
+*This will install a WSL using Ubuntu with the name bingobongo, the user dulli and the vhdx file will be located at c:\wsldistros\bingobongo*
 
 ## wsl/ansible
 **variables.yaml**
