@@ -3,3 +3,5 @@ ruby_version: 3.2.2
 nodejs_version: v18.16.0
 GitRepo: git@github.com:odcheck/tuxonlinewisdom.github.io.git
 GitRepoDest: $HOME/git/tuxonlinewisdom.github.io/
+install_ruby: true
+install_nodejs: true
