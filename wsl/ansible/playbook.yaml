@@ -16,6 +16,7 @@
 
   - name: RBenv dependencys for ruby
     register: rubydependency
+    when: install_ruby|bool
     apt:
       pkg:
       - autoconf
@@ -36,6 +37,7 @@
 
   - name: Download rbenv install for ruby
     register: rbenvinstaller
+    when: install_ruby|bool
     become: false     
     shell:
       cmd: curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
@@ -44,6 +46,7 @@
   - name: Add rbenv and gem path to .bashrc
     register: bashrcmodify
     become: false
+    when: install_ruby|bool
     ansible.builtin.blockinfile:
       path: ~/.bashrc
       backup: yes
@@ -55,6 +58,7 @@
 
   - name: Download nvm install for nodejs
     register: nvminstaller
+    when: install_nodejs|bool
     become: false
     shell:
       cmd: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/"{{ nvm_installer_version }}"/install.sh | bash
@@ -62,6 +66,7 @@
 
   - name: Install latest ruby
     register: installruby
+    when: install_ruby|bool
     become: false
     async: 600
     shell: |
@@ -79,6 +84,7 @@
 
   - name: Install latest nodejs
     register: installnodejs
+    when: install_nodejs|bool
     become: false
     async: 600
     shell: |
@@ -97,6 +103,7 @@
 
   - name: Gem install jekyll bundler
     register: geminstall
+    when: install_nodejs|bool and install_ruby|bool
     become: false
     async: 600
     shell: |
