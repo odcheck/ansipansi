@@ -18,11 +18,11 @@ if (-not(Test-Path $Env:windir\temp\wslprep)) {
     New-Item -Path $Env:windir\temp\wslprep -ItemType Directory
 }
 else {
-    Write-host "Folder '$Env:windir\temp\wslprep' already exists!" | Red
+    Write-host "Folder '$Env:windir\temp\wslprep' already exists, no need to create the folder." | Green
 }
 
 if (Test-Path $Env:windir\temp\wslprep\Ubuntu.appx -PathType leaf) {
-    Write-Output "File does Exist" | Red
+    Write-Output "File does Exist Ubuntu.appx from last run exists." | Green
 }
 else {
     Write-Output "Downloading the Ubuntu 22.04 LTS appx installer, this could take a while..." | Red
@@ -38,7 +38,7 @@ if (-Not (Test-Path -Path $wslvhdxpath)) {
     New-Item -Path $wslvhdxpath -ItemType Directory
 }
 else {
-    Write-host "Folder '$wslvhdxpath' already exists!" | Red
+    Write-host "Folder '$wslvhdxpath' already exists, no need to create the folder." | Green
 }
 
 Write-Output "Install Ubuntu 22.04 LTS with VHDX path $wslvhdxpath and WSL installation name $wslname" | Green
