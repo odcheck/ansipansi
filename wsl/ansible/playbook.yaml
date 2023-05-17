@@ -9,9 +9,9 @@
   tasks:
   - name: Smalltalk with the repos if older 1h
     register: systemupdate
-    apt: 
-      update_cache=yes 
-      force_apt_get=yes 
+    apt:
+      update_cache=yes
+      force_apt_get=yes
       cache_valid_time=3600
 
   - name: RBenv dependencys for ruby
@@ -38,7 +38,7 @@
   - name: Download rbenv install for ruby
     register: rbenvinstaller
     when: install_ruby|bool
-    become: false     
+    become: false
     shell:
       cmd: curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
       warn: false
@@ -54,7 +54,7 @@
         export PATH="$HOME/.rbenv/bin:$PATH"
         eval "$(rbenv init -)"
         export GEM_HOME="$HOME/gems"
-        export PATH="$HOME/gems/bin:$PATH"        
+        export PATH="$HOME/gems/bin:$PATH"
 
   - name: Download nvm install for nodejs
     register: nvminstaller
@@ -108,11 +108,11 @@
     async: 600
     shell: |
         export PATH="$HOME/.rbenv/bin:$PATH"
-        eval "$(rbenv init -)"    
+        eval "$(rbenv init -)"
         export GEM_HOME="$HOME/gems"
         export PATH="$HOME/gems/bin:$PATH"
         gem install jekyll bundler
-    
+
     args:
       executable: /bin/bash
 

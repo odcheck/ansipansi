@@ -35,17 +35,17 @@ createMainUser () {
 
   cp ${DIR_ME}/nogit/* ${HOMEDIR}/.ssh
 
-  if [[ -f ${HOMEDIR}/.ssh/config ]]; then      
+  if [[ -f ${HOMEDIR}/.ssh/config ]]; then
       chown ${USERNAME}:${USERNAME} ${HOMEDIR}/.ssh/config
       chmod 644 ${HOMEDIR}/.ssh/config
   fi
 
-  if [[ -f ${HOMEDIR}/.ssh/id_rsa ]]; then      
+  if [[ -f ${HOMEDIR}/.ssh/id_rsa ]]; then
       chown ${USERNAME}:${USERNAME} ${HOMEDIR}/.ssh/id_rsa
       chmod 600 ${HOMEDIR}/.ssh/id_rsa
   fi
 
-  if [[ -f ${HOMEDIR}/.ssh/id_rsa.pub ]]; then      
+  if [[ -f ${HOMEDIR}/.ssh/id_rsa.pub ]]; then
       chown ${USERNAME}:${USERNAME} ${HOMEDIR}/.ssh/id_rsa.pub
       chmod 644 ${HOMEDIR}/.ssh/id_rsa.pub
   fi
