@@ -19,6 +19,20 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ./installmyubuntu.ps1 bingobongo c:\wsldistros\bingobongo dulli
 ```
 
+## wsl/ansible
+**variables.yaml**
+
+Example:
+```
+nvm_installer_version: v0.39.3
+ruby_version: 3.2.2
+nodejs_version: v18.16.0
+GitRepo: git@github.com:odcheck/tuxonlinewisdom.github.io.git
+GitRepoDest: $HOME/git/tuxonlinewisdom.github.io/
+install_ruby: true
+install_nodejs: true
+```
+
 ## Related Jon Rahm readings
 * [WSL2 slow network issue?](https://blog.tuxclouds.org/posts/wsl2-slow/)
 * [Jon Rahm golfs you down, greates player](https://en.wikipedia.org/wiki/Jon_Rahm)
