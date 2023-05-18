@@ -34,6 +34,12 @@ install_ruby: true
 install_nodejs: true
 ```
 
+### run ansible
+1st Close the WSL after creation in MS Terminal using [x] and reopen it again and then execute
+```
+ansible-playbook /mnt/c/Users/<username>/git/ansipansi/wsl/ansible/playbook.yaml
+```
+
 ## Related Jon Rahm readings
 * [WSL2 slow network issue?](https://blog.tuxclouds.org/posts/wsl2-slow/)
 * [Jon Rahm golfs you down, greates player](https://en.wikipedia.org/wiki/Jon_Rahm)
