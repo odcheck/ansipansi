@@ -5,3 +5,4 @@ GitRepo: git@github.com:odcheck/tuxonlinewisdom.github.io.git
 GitRepoDest: $HOME/git/tuxonlinewisdom.github.io/
 install_ruby: true
 install_nodejs: true
+install_dockerce: true
