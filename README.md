@@ -67,9 +67,6 @@ ansible-playbook /mnt/c/Users/<username>/git/ansipansi/wsl/ansible/playbook.yaml
         │   │
         │   └───nogit
         │           .gitignore
-        │           config
-        │           id_rsa
-        │           id_rsa.pub
         │
         └───files
                 .wslconfig
