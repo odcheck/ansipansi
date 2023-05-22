@@ -171,3 +171,10 @@
       name: "{{ ansible_facts['env']['SUDO_USER'] }}"
       groups: docker
       append: true
+
+  - name: Install docker-compose {{ docker_compose_version }}
+    when: install_docker_compose|bool
+    get_url:
+      url : https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64
+      dest: /usr/local/bin/docker-compose
+      mode: '755'
