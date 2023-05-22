@@ -43,3 +43,33 @@ ansible-playbook /mnt/c/Users/<username>/git/ansipansi/wsl/ansible/playbook.yaml
 ## Related Jon Rahm readings
 * [WSL2 slow network issue?](https://blog.tuxclouds.org/posts/wsl2-slow/)
 * [Jon Rahm golfs you down, greates player](https://en.wikipedia.org/wiki/Jon_Rahm)
+
+## Directory structure
+
+    │   .gitattributes
+    │   activateWSL.ps1
+    │   colorpower.ps1
+    │   installdistro.ps1
+    │   installWSL2kernel.ps1
+    │   README.md
+    │
+    └───wsl
+        ├───ansible
+        │       playbook.yaml
+        │       variables.yaml
+        │
+        ├───bash
+        │   │   .userfoo.sh
+        │   │   createUser.sh
+        │   │   prepare.sh
+        │   │   sudoNoPasswd.sh
+        │   │   wsl.conf
+        │   │
+        │   └───nogit
+        │           .gitignore
+        │           config
+        │           id_rsa
+        │           id_rsa.pub
+        │
+        └───files
+                .wslconfig
