@@ -1,10 +1,10 @@
 #!/bin/bash
 
 set -euo pipefail
-DIR_ME=$(realpath $(dirname $0))
+DIR_ME=$(realpath "$(dirname "$0")")
 
 # this script is called by root an must fail if no user is provided
-. ${DIR_ME}/.userfoo.sh
+. "${DIR_ME}/.userfoo.sh"
 setUserName ${1-""}
 OS_TYPE=${2-"ubuntu"}
 
@@ -33,7 +33,7 @@ createMainUser () {
       chmod 700 ${HOMEDIR}/.ssh
   fi
 
-  cp ${DIR_ME}/nogit/* ${HOMEDIR}/.ssh
+  cp "${DIR_ME}/nogit/"* "${HOMEDIR}/.ssh"
 
   if [[ -f ${HOMEDIR}/.ssh/config ]]; then
       chown ${USERNAME}:${USERNAME} ${HOMEDIR}/.ssh/config

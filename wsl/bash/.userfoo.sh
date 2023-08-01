@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -euo pipefail
-DIR_INSTALL_UTILS=$(realpath $( dirname ${BASH_SOURCE[0]:-$0} ) )
+DIR_INSTALL_UTILS=$(realpath "$( dirname "${BASH_SOURCE[0]:-$0}" )" )
 USERNAME=""
 HOMEDIR=""
 
@@ -65,7 +65,7 @@ addSudoers () {
 modifyWslConf () {
   verifyUserName
   echo ${DIR_INSTALL_UTILS}
-  sudo cp ${DIR_INSTALL_UTILS}/wsl.conf /etc/wsl.conf
+  sudo cp "${DIR_INSTALL_UTILS}/wsl.conf" /etc/wsl.conf
   sudo echo "[user]" >> /etc/wsl.conf
   sudo echo "default=${USERNAME}" >> /etc/wsl.conf
 }
