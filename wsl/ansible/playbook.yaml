@@ -7,6 +7,26 @@
   gather_facts: true
 
   tasks:
+  - name: Find available roles
+    find:
+      paths: roles
+      recurse: no
+      file_type: directory
+    register: roles_find_result
+    delegate_to: 127.0.0.1
+
+  - name: Create list of available roles
+    set_fact:
+      roles_available: "{{ roles_available | default([]) + [ item.path | basename ] }}"
+    with_items:
+    - "{{ roles_find_result.files }}"
+
+  - name: Decide with roles to run
+    set_fact:
+      roles_to_run: "{{ roles_to_run | default([]) + [ item ] if lookup('vars', 'install_' + (item | regex_replace('^[0-9]+_', '')), default=true)|bool else roles_to_run | default([])}}"
+    with_items:
+    - "{{ roles_available }}"
+
   - name: Smalltalk with the repos if older 1h
     register: systemupdate
     apt:
@@ -171,3 +191,10 @@
       name: "{{ ansible_facts['env']['SUDO_USER'] }}"
       groups: docker
       append: true
+
+  - name: Run roles
+    include_role:
+      name: "{{ role }}"
+    loop: "{{ roles_to_run }}"
+    loop_control:
+      loop_var: role
