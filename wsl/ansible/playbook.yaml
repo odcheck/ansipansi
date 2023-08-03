@@ -1,12 +1,17 @@
 - name: Works on my machine
   hosts: 127.0.0.1
   connection: local
-  vars_files:
-    - ./variables.yaml
   become: true
   gather_facts: true
 
   tasks:
+  - name: Load vars file - fallback to example if not exists
+    include_vars: "{{ item }}"
+    with_first_found:
+    - files:
+      - "variables.yaml"
+      - "variables.example.yaml"
+
   - name: Smalltalk with the repos if older 1h
     register: systemupdate
     apt:
