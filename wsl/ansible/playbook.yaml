@@ -34,48 +34,6 @@
       force_apt_get=yes
       cache_valid_time=3600
 
-  - name: RBenv dependencys for ruby
-    register: rubydependency
-    when: install_ruby|bool
-    apt:
-      pkg:
-      - autoconf
-      - bison
-      - build-essential
-      - libssl-dev
-      - libyaml-dev
-      - libreadline6-dev
-      - zlib1g-dev
-      - libncurses5-dev
-      - libffi-dev
-      - libgdbm6
-      - libgdbm-dev
-      - libdb-dev
-      - patch
-      - rustc
-      - uuid-dev
-
-  - name: Download rbenv install for ruby
-    register: rbenvinstaller
-    when: install_ruby|bool
-    become: false
-    shell:
-      cmd: curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
-      warn: false
-
-  - name: Add rbenv and gem path to .bashrc
-    register: bashrcmodify
-    become: false
-    when: install_ruby|bool
-    ansible.builtin.blockinfile:
-      path: ~/.bashrc
-      backup: yes
-      block: |
-        export PATH="$HOME/.rbenv/bin:$PATH"
-        eval "$(rbenv init -)"
-        export GEM_HOME="$HOME/gems"
-        export PATH="$HOME/gems/bin:$PATH"
-
   - name: Download nvm install for nodejs
     register: nvminstaller
     when: install_nodejs|bool
@@ -83,24 +41,6 @@
     shell:
       cmd: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/"{{ nvm_installer_version }}"/install.sh | bash
       warn: false
-
-  - name: Install latest ruby
-    register: installruby
-    when: install_ruby|bool
-    become: false
-    async: 600
-    shell: |
-        export PATH="$HOME/.rbenv/bin:$PATH"
-        eval "$(rbenv init -)"
-        rbenv install "{{ ruby_version }}"
-        rbenv global "{{ ruby_version }}"
-
-    args:
-      executable: /bin/bash
-
-  - name: Check installation results of ruby "{{ ruby_version }}"
-    debug:
-      var: installruby.stdout
 
   - name: Install latest nodejs
     register: installnodejs
