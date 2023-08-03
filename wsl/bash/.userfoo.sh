@@ -8,8 +8,8 @@ HOMEDIR=""
 modifyBashrc () {
   searchFor=${1}
   writeString=${2}
-  if [[ $(cat ${HOMEDIR}/.bashrc | grep ${searchFor} | wc -l) == 0 ]]; then
-    echo ${writeString} >> ${HOMEDIR}/.bashrc
+  if [[ $(cat ${HOMEDIR}/.bashrc | grep "${searchFor}" | wc -l) == 0 ]]; then
+    echo "${writeString}" >> ${HOMEDIR}/.bashrc
     . ${HOMEDIR}/.bashrc
   else
     echo "${searchFor}: ${HOMEDIR}/.bashrc is already properly configured."
@@ -64,7 +64,6 @@ addSudoers () {
 
 modifyWslConf () {
   verifyUserName
-  echo ${DIR_INSTALL_UTILS}
   sudo cp "${DIR_INSTALL_UTILS}/wsl.conf" /etc/wsl.conf
   sudo echo "[user]" >> /etc/wsl.conf
   sudo echo "default=${USERNAME}" >> /etc/wsl.conf

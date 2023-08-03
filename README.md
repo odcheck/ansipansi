@@ -63,6 +63,7 @@ ansible-playbook /mnt/c/Users/<username>/git/ansipansi/wsl/ansible/playbook.yaml
         │   │   createUser.sh
         │   │   prepare.sh
         │   │   sudoNoPasswd.sh
+        │   │   updateNoGit.sh
         │   │   wsl.conf
         │   │
         │   └───nogit
