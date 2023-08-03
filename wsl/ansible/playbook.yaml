@@ -12,6 +12,11 @@
       install_jekyll: "{{ true if install_nodejs|bool and install_ruby|bool else false }}"
     when: install_jekyll is undefined
 
+  - name: Set install_clone_repo_single for legacy support
+    set_fact:
+      install_clone_repo_single: "{{ true if GitRepo is defined else false }}"
+    when: install_clone_repo_single is undefined
+
   - name: Find available roles
     find:
       paths: roles
@@ -38,16 +43,6 @@
       update_cache=yes
       force_apt_get=yes
       cache_valid_time=3600
-
-  - name: Clone tuxonlinewisdom Git repository
-    become: false
-    tags: gitclone
-    when: GitRepo is defined
-    git:
-      repo: "{{ GitRepo }}"
-      dest: "{{ GitRepoDest }}"
-      accept_hostkey: yes
-      key_file: $HOME/.ssh/id_rsa
 
   - name: Run roles
     include_role:

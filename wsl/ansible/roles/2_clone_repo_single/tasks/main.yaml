@@ -1,0 +1,9 @@
+---
+- name: Clone Git repository
+  become: false
+  tags: gitclone
+  git:
+    repo: "{{ GitRepo }}"
+    dest: "{{ GitRepoDest }}"
+    accept_hostkey: yes
+    key_file: $HOME/.ssh/id_rsa
