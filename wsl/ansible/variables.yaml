@@ -1,7 +1,3 @@
-nvm_installer_version: v0.39.3
-ruby_version: 3.2.2
-nodejs_version: v18.16.0
-docker_apt_arch: amd64
 GitRepo: git@github.com:odcheck/tuxonlinewisdom.github.io.git
 GitRepoDest: $HOME/git/tuxonlinewisdom.github.io/
 install_ruby: true

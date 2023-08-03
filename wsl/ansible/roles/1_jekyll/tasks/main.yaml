@@ -1,0 +1,18 @@
+---
+- name: Gem install jekyll bundler
+  register: geminstall
+  become: false
+  async: 600
+  shell: |
+      export PATH="$HOME/.rbenv/bin:$PATH"
+      eval "$(rbenv init -)"
+      export GEM_HOME="$HOME/gems"
+      export PATH="$HOME/gems/bin:$PATH"
+      gem install jekyll bundler
+
+  args:
+    executable: /bin/bash
+
+- name: Check installation result of jekyll bundler
+  debug:
+    var: geminstall.stdout

@@ -7,6 +7,36 @@
   gather_facts: true
 
   tasks:
+  - name: Set install_jekyll for legacy support
+    set_fact:
+      install_jekyll: "{{ true if install_nodejs|bool and install_ruby|bool else false }}"
+    when: install_jekyll is undefined
+
+  - name: Set install_clone_repo_single for legacy support
+    set_fact:
+      install_clone_repo_single: "{{ true if GitRepo is defined else false }}"
+    when: install_clone_repo_single is undefined
+
+  - name: Find available roles
+    find:
+      paths: roles
+      recurse: no
+      file_type: directory
+    register: roles_find_result
+    delegate_to: 127.0.0.1
+
+  - name: Create list of available roles
+    set_fact:
+      roles_available: "{{ roles_available | default([]) + [ item.path | basename ] }}"
+    with_items:
+    - "{{ roles_find_result.files }}"
+
+  - name: Decide with roles to run
+    set_fact:
+      roles_to_run: "{{ roles_to_run | default([]) + [ item ] if lookup('vars', 'install_' + (item | regex_replace('^[0-9]+_', '')), default=true)|bool else roles_to_run | default([])}}"
+    with_items:
+    - "{{ roles_available }}"
+
   - name: Smalltalk with the repos if older 1h
     register: systemupdate
     apt:
@@ -14,160 +44,9 @@
       force_apt_get=yes
       cache_valid_time=3600
 
-  - name: RBenv dependencys for ruby
-    register: rubydependency
-    when: install_ruby|bool
-    apt:
-      pkg:
-      - autoconf
-      - bison
-      - build-essential
-      - libssl-dev
-      - libyaml-dev
-      - libreadline6-dev
-      - zlib1g-dev
-      - libncurses5-dev
-      - libffi-dev
-      - libgdbm6
-      - libgdbm-dev
-      - libdb-dev
-      - patch
-      - rustc
-      - uuid-dev
-
-  - name: Download rbenv install for ruby
-    register: rbenvinstaller
-    when: install_ruby|bool
-    become: false
-    shell:
-      cmd: curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
-      warn: false
-
-  - name: Add rbenv and gem path to .bashrc
-    register: bashrcmodify
-    become: false
-    when: install_ruby|bool
-    ansible.builtin.blockinfile:
-      path: ~/.bashrc
-      backup: yes
-      block: |
-        export PATH="$HOME/.rbenv/bin:$PATH"
-        eval "$(rbenv init -)"
-        export GEM_HOME="$HOME/gems"
-        export PATH="$HOME/gems/bin:$PATH"
-
-  - name: Download nvm install for nodejs
-    register: nvminstaller
-    when: install_nodejs|bool
-    become: false
-    shell:
-      cmd: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/"{{ nvm_installer_version }}"/install.sh | bash
-      warn: false
-
-  - name: Install latest ruby
-    register: installruby
-    when: install_ruby|bool
-    become: false
-    async: 600
-    shell: |
-        export PATH="$HOME/.rbenv/bin:$PATH"
-        eval "$(rbenv init -)"
-        rbenv install "{{ ruby_version }}"
-        rbenv global "{{ ruby_version }}"
-
-    args:
-      executable: /bin/bash
-
-  - name: Check installation results of ruby "{{ ruby_version }}"
-    debug:
-      var: installruby.stdout
-
-  - name: Install latest nodejs
-    register: installnodejs
-    when: install_nodejs|bool
-    become: false
-    async: 600
-    shell: |
-        export NVM_DIR="$HOME/.nvm"
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-        nvm install "{{ nodejs_version }}"
-        nvm use "{{ nodejs_version }}"
-
-    args:
-      executable: /bin/bash
-
-  - name: Check installation results of nodejs "{{ nodejs_version }}"
-    debug:
-      var: installnodejs.stdout
-
-  - name: Gem install jekyll bundler
-    register: geminstall
-    when: install_nodejs|bool and install_ruby|bool
-    become: false
-    async: 600
-    shell: |
-        export PATH="$HOME/.rbenv/bin:$PATH"
-        eval "$(rbenv init -)"
-        export GEM_HOME="$HOME/gems"
-        export PATH="$HOME/gems/bin:$PATH"
-        gem install jekyll bundler
-
-    args:
-      executable: /bin/bash
-
-  - name: Check installation result of jekyll bundler
-    debug:
-      var: geminstall.stdout
-
-  - name: Clone tuxonlinewisdom Git repository
-    become: false
-    tags: gitclone
-    when: GitRepo is defined
-    git:
-      repo: "{{ GitRepo }}"
-      dest: "{{ GitRepoDest }}"
-      accept_hostkey: yes
-      key_file: $HOME/.ssh/id_rsa
-
-  - name: Install Docker apt requirements
-    when: install_dockerce|bool
-    ansible.builtin.apt:
-      name:
-        - apt-transport-https
-        - ca-certificates
-        - lsb-release
-        - gnupg
-      state: latest
-      update_cache: true
-
-  - name: Add Docker signing key
-    when: install_dockerce|bool
-    ansible.builtin.apt_key:
-      url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
-      state: present
-
-  - name: Add repository docker into sources list
-    when: install_dockerce|bool
-    ansible.builtin.apt_repository:
-      repo: "deb [arch={{ docker_apt_arch }}] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
-      state: present
-      filename: docker
-
-  - name: Install Docker
-    when: install_dockerce|bool
-    ansible.builtin.apt:
-      name:
-        - docker
-        - docker.io
-        - docker-registry
-        - docker-compose-plugin
-      state: latest
-      update_cache: true
-
-  - name: Adding user to secondary group docker
-    when: install_dockerce|bool
-    ansible.builtin.user:
-      name: "{{ ansible_facts['env']['SUDO_USER'] }}"
-      groups: docker
-      append: true
+  - name: Run roles
+    include_role:
+      name: "{{ role }}"
+    loop: "{{ roles_to_run }}"
+    loop_control:
+      loop_var: role
