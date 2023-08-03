@@ -10,7 +10,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 3. reboot system
 
 ## Install Debian or Ubuntu
-1. If you put your crap ssh files like (id_rsa, id_rsa.pub and config) into the folder wsl/bash/nogit you're fine otherwise you're fucked. So it's recommended. *PS: If e.g. your ssh private key file is called id_my_rsa or something else, you're fucked as well, cause I don't care. The must be named as mentioned.*
+1. If you put your crap ssh files like (id_rsa, id_rsa.pub and config) into the folder wsl/bash/nogit you're fine otherwise you're fucked. So it's recommended.
 2. *installdistro.ps1*\
 ```./installdistro.ps1 <wslname> <wslvhdxpath> <username> <debian|ubuntu>```
 
