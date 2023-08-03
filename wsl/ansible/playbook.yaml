@@ -7,6 +7,11 @@
   gather_facts: true
 
   tasks:
+  - name: Set install_jekyll for legacy support
+    set_fact:
+      install_jekyll: "{{ true if install_nodejs|bool and install_ruby|bool else false }}"
+    when: install_jekyll is undefined
+
   - name: Find available roles
     find:
       paths: roles
@@ -33,25 +38,6 @@
       update_cache=yes
       force_apt_get=yes
       cache_valid_time=3600
-
-  - name: Gem install jekyll bundler
-    register: geminstall
-    when: install_nodejs|bool and install_ruby|bool
-    become: false
-    async: 600
-    shell: |
-        export PATH="$HOME/.rbenv/bin:$PATH"
-        eval "$(rbenv init -)"
-        export GEM_HOME="$HOME/gems"
-        export PATH="$HOME/gems/bin:$PATH"
-        gem install jekyll bundler
-
-    args:
-      executable: /bin/bash
-
-  - name: Check installation result of jekyll bundler
-    debug:
-      var: geminstall.stdout
 
   - name: Clone tuxonlinewisdom Git repository
     become: false
