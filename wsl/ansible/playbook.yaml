@@ -34,33 +34,6 @@
       force_apt_get=yes
       cache_valid_time=3600
 
-  - name: Download nvm install for nodejs
-    register: nvminstaller
-    when: install_nodejs|bool
-    become: false
-    shell:
-      cmd: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/"{{ nvm_installer_version }}"/install.sh | bash
-      warn: false
-
-  - name: Install latest nodejs
-    register: installnodejs
-    when: install_nodejs|bool
-    become: false
-    async: 600
-    shell: |
-        export NVM_DIR="$HOME/.nvm"
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-        nvm install "{{ nodejs_version }}"
-        nvm use "{{ nodejs_version }}"
-
-    args:
-      executable: /bin/bash
-
-  - name: Check installation results of nodejs "{{ nodejs_version }}"
-    debug:
-      var: installnodejs.stdout
-
   - name: Gem install jekyll bundler
     register: geminstall
     when: install_nodejs|bool and install_ruby|bool
