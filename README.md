@@ -21,7 +21,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 *This will install a WSL using Ubuntu with the name bingobongo, the user dulli and the vhdx file will be located at c:\wsldistros\bingobongo*
 
 ## wsl/ansible
-**variables.yaml**
+**variables.example.yaml**
 
 Example:
 ```
@@ -33,6 +33,8 @@ GitRepoDest: $HOME/git/tuxonlinewisdom.github.io/
 install_ruby: true
 install_nodejs: true
 ```
+
+Create **variables.yaml** otherwise the example will be used.
 
 ### run ansible
 1st Close the WSL after creation in MS Terminal using [x] and reopen it again and then execute
